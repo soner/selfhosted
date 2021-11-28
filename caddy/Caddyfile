@@ -1,0 +1,35 @@
+{
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+    acme_dns cloudflare {env.CF_API_TOKEN}
+}
+
+hass.{$MY_DOMAIN} {
+    reverse_proxy 192.168.230.3:8123
+}
+
+cloud.{$MY_DOMAIN}:443 {
+    reverse_proxy 192.168.230.64:80
+}
+
+pve1.{$MY_DOMAIN}:443 {
+    reverse_proxy 192.168.230.11:8006 {
+      transport http {
+        tls_insecure_skip_verify
+      }
+    }
+}
+
+portainer.{$MY_DOMAIN} {
+    reverse_proxy portainer:9000
+}
+
+xbs.{$MY_DOMAIN} {
+    reverse_proxy xbs-api:9000
+}
+
+grafana.{$MY_DOMAIN} {
+    reverse_proxy grafana:3000
+}
+prometheus.{$MY_DOMAIN} {
+    reverse_proxy prometheus:9090
+}
